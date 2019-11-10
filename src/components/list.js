@@ -45,10 +45,48 @@ export default class List extends React.Component {
           group : "STONES",
           createdDate : "2019/11/4 오전 9:40"
         },
+        {
+          eggTitle : "To-do List 2",
+          deadline : "21일 남음",
+          todos : [
+            {content: "Spooky scary skeleton", complete: "미완료", done: "완료했을 경우 버튼을 클릭하세요."},
+            {content: "Beep beep I'm a sheep", complete: "미완료", done: "완료했을 경우 버튼을 클릭하세요."},
+            {content: "So very totally cool", complete: "미완료", done: "완료했을 경우 버튼을 클릭하세요."},
+            {content: "You are a pirate", complete: "미완료", done: "완료했을 경우 버튼을 클릭하세요."}
+          ],
+          penalty : "4 dollar",
+          group : "HANSUNG",
+          createdDate : "2019/11/8 오전 11:17"
+        },
       ],
-      index : [0, 1, 2],
-      visibleList : [0, 1, 2],
-      visibleGroupList : [0, 1, 2]
+      index : [0, 1, 2, 3],
+      visibleList : [0, 1, 2, 3],
+      groups : [{
+          groupName: "그룹",
+          members: [
+            {memberName: "멤버1"},
+            {memberName: "멤버2"}
+          ]
+        },
+        {
+          groupName: "HANSUNG",
+          members: [
+            {memberName: "한성인1"},
+            {memberName: "한성인2"},
+            {memberName: "한성인3"}
+          ]
+        },
+        {
+          groupName: "STONES",
+          members: [
+            {memberName: "권대환"},
+            {memberName: "김진우"},
+            {memberName: "박윤아"},
+            {memberName: "정서영"}
+          ]
+        },
+      ],
+      groupIndex : [0, 1, 2]
     }
   }
 
@@ -57,23 +95,27 @@ export default class List extends React.Component {
     var egg = this.state.eggs;
     var idx = this.state.index;
     
-    var visible = idx.map(i => (egg[i].group === groupName || groupName === "groupAll") ? i : -1);
+    var visible;
+    if(groupName === "groupAll") {
+      visible = idx;
+    } else {
+      visible = idx.map(i => (egg[i].group === groupName) ? i : -1);
+    }
     this.setState({
-      visibleList: visible,
-      visibleGroupList: visible
+      visibleList: visible
     });
   }
 
   selectEnded = e => {
     var option = e.target.value;
     var egg = this.state.eggs;
-    var idx = this.state.visibleGroupList;
+    var idx = this.state.index;
     var visible;
     
     if(option === "end") {
-      visible = idx.map(i => (egg[i].deadline === "마감" && i !== -1) ? i : -1);
+      visible = idx.map(i => (egg[i].deadline === "마감") ? i : -1);
     } else if(option === "notEnd") {
-      visible = idx.map(i => (egg[i].deadline !== "마감" && i !== -1) ? i : -1);
+      visible = idx.map(i => (egg[i].deadline !== "마감") ? i : -1);
     } else {
       visible = this.state.index;
     }
@@ -82,7 +124,7 @@ export default class List extends React.Component {
 
   render() {
     var egg = this.state.eggs;
-    var idx = this.state.index;
+    var group = this.state.groups;
 
     return (
       <div>
@@ -92,7 +134,7 @@ export default class List extends React.Component {
           <p>그룹 : </p>
           <select onChange={this.selectGroup.bind(this)}>
             <option value="groupAll">전체</option>
-            {idx.map(i => <option value={egg[i].group}>{egg[i].group}</option>)}
+            {this.state.groupIndex.map(i => <option value={group[i].groupName}>{group[i].groupName}</option>)}
           </select>
           <p>마감 : </p>
           <select onChange={this.selectEnded.bind(this)}>
@@ -114,7 +156,7 @@ export default class List extends React.Component {
           spacing={3}
           direction="column"
           alignItems="center">
-          {this.state.visibleList.map(i => (i !== -1) ? <Egg oneEgg = {egg[i]}/> : null)}
+          {this.state.visibleList.map(i => (i !== -1) ? <Egg oneEgg = {egg[i]} groups = {group}/> : null)}
         </Grid>
       </div>
     )

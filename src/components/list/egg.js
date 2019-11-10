@@ -1,5 +1,6 @@
 import React from "react";
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import {withStyles } from '@material-ui/core/styles';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -38,7 +39,9 @@ class Egg extends React.Component {
         todos : this.props.oneEgg.todos,
         penalty : this.props.oneEgg.penalty,
         group : this.props.oneEgg.group,
-        createdDate : this.props.oneEgg.createdDate
+        createdDate : this.props.oneEgg.createdDate,
+        groups : this.props.groups,
+        members : []
       }
   }
 
@@ -66,8 +69,20 @@ class Egg extends React.Component {
     var idx = [];
     var data = this.state.todos;
     var todoLen = data.length;
+    var members = [];
+    var memberIdx = [];
+    var i = 0;
 
-    for(var i = 0; i < todoLen; i++) {idx.push(i);}
+    for(i = 0; i < todoLen; i++) {idx.push(i);}
+
+    for(i = 0; i < this.state.groups.length; i++) {
+      if(this.state.group === this.state.groups[i].groupName) {
+        members = this.state.groups[i].members;
+        break;
+      }
+    }
+
+    for(i = 0; i < members.length; i++) {memberIdx.push(i);}
 
     idx.map(i => {
       lists.push(<li>{data[i].content}<Tooltip title={data[i].done} placement="top"><input type="button" value={data[i].complete} className="btn" onClick={function() {
@@ -95,19 +110,30 @@ class Egg extends React.Component {
             {lists}
           </ul>
         </div>
-        <div className="Group"> {this.state.group}
-          <AccountCircleRoundedIcon />
-          <AccountCircleRoundedIcon />
-        </div>
-        <div className="Penalty"> 벌칙 : {this.state.penalty} </div>
-        <div className="IconButton">
-          <EggInfo
-            eggTitle = {this.state.eggTitle}
-            penalty = {this.state.penalty}
-            createdDate = {this.state.createdDate}
-          />
-          <EggSetting/>
-        </div>
+        <Grid container className={classes.root} direction="row">
+          <Grid item xs>
+            <Grid container justify="center" direction="row">
+              {this.state.group}
+              {memberIdx.map(i => <Tooltip title={members[i].memberName} placement="top"><AccountCircleRoundedIcon /></Tooltip>)}
+            </Grid>
+          </Grid>
+          <Grid item xs>
+            <Grid container justify="center" direction="row">
+              벌칙 : {this.state.penalty}
+            </Grid>
+          </Grid>
+          <Grid item xs>
+            <Grid container justify="center" direction="row">
+              <EggInfo
+                eggTitle = {this.state.eggTitle}
+                penalty = {this.state.penalty}
+                createdDate = {this.state.createdDate}
+              />
+              <EggSetting/>
+            </Grid>
+          </Grid>
+        </Grid>
+        <br/>
         <div className="createdDate">
           {this.state.createdDate} 생성됨
         </div>

@@ -4,14 +4,9 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.5.1",
-<<<<<<< HEAD
     "axios": "^0.19.0",
-    "material-icons": "^0.3.1",
     "moment": "^2.24.0",
     "multer": "^1.4.2",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-=======
     "@material-ui/icons": "^4.5.1",
     "material-icons": "^0.3.1",
     "material-ui": "^0.20.2",
@@ -19,7 +14,6 @@
     "react-addons-update": "^15.6.2",
     "react-autosuggest": "^9.4.3",
     "react-dom": "^16.11.0",
->>>>>>> 44729071c45ab64363479ea596707c02ca81d2c4
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.1.2"
   },
