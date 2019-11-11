@@ -10,6 +10,9 @@ import MenuItem from "@material-ui/core/MenuItem"
 import Button from "@material-ui/core/Button"
 import { Link } from "react-router-dom"
 import image from '../images/icons8-eggplant-48.png'
+import Tooltip from '@material-ui/core/Tooltip';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -36,6 +39,8 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     color: "#A003FA",
+  },
+  fab: {
   },
 }));
 
@@ -193,12 +198,14 @@ export default function CreateEgg() {
               ))}
             </TextField>
           </div>
-          <div>
+          <Tooltip title="Add" aria-label="add">
             <Link to="/createPenalty">
-              <Button variant="outlined" color="inherit" className={classes.button}>
-                CREATE PENALTY
-              </Button>
+            <Fab color="primary" className={classes.fab}>
+              <AddIcon />
+            </Fab>
             </Link>
+          </Tooltip>
+          <div>
             <div>
             <Link to="/success">
             <Button variant="outlined" color="inherit" className={classes.button}>

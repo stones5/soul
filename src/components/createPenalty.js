@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   '@global': {
     body : {
       backgroundColor : "#f5f5f5",
-      align: "center"
+      alignItems: "center"
     },
   },
   div1: {

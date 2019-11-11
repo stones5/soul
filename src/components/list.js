@@ -127,7 +127,7 @@ export default class List extends React.Component {
 
     return (
       <div>
-        <Typography variant="h3" align="center">내 에그 목록</Typography>
+        <Typography variant="h3" align="center">Egg List</Typography>
         <hr />
         <Grid container direction="row" justify="center" alignItems="center" spacing={3}>
           <p>그룹 : </p>
