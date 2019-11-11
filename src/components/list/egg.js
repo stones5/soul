@@ -52,13 +52,19 @@ class Egg extends React.Component {
     var date = d.getDate();
     var hour = d.getHours()
     var minute = d.getMinutes();
+    var ampm = "";
 
-    if(hour > 12) {hour = "오후 " + (hour - 12);}
-    else if(hour === 12) {hour = "오후 " + hour;}
-    else if(hour === 24) {hour = "오전 " + (hour - 12);}
-    else {hour = "오전 " + hour;}
+    if(hour > 12) {ampm = "오후 "; hour -= 12;}
+    else if(hour === 12) {ampm = "오후 ";}
+    else if(hour === 24) {ampm = "오전 "; hour -= 12;}
+    else {ampm = "오전 ";}
 
-    var result = year + "/" + month + "/" + date + " " + hour + ":" + minute;
+    if(hour < 10) {hour = "0" + hour;}
+    if(minute < 10) {minute = "0" + minute;}
+    if(month < 10) {month = "0" + month;}
+    if(date < 10) {date = "0" + date;}
+
+    var result = year + "/" + month + "/" + date + " " + ampm + " " + hour + ":" + minute;
     return(result);
   }
 
@@ -70,7 +76,6 @@ class Egg extends React.Component {
     var data = this.state.todos;
     var todoLen = data.length;
     var members = [];
-    var memberIdx = [];
     var i = 0;
 
     for(i = 0; i < todoLen; i++) {idx.push(i);}
@@ -81,8 +86,6 @@ class Egg extends React.Component {
         break;
       }
     }
-
-    for(i = 0; i < members.length; i++) {memberIdx.push(i);}
 
     idx.map(i => {
       lists.push(<li>{data[i].content}<Tooltip title={data[i].done} placement="top"><input type="button" value={data[i].complete} className="btn" onClick={function() {
@@ -114,7 +117,7 @@ class Egg extends React.Component {
           <Grid item xs>
             <Grid container justify="center" direction="row">
               {this.state.group}
-              {memberIdx.map(i => <Tooltip title={members[i].memberName} placement="top"><AccountCircleRoundedIcon /></Tooltip>)}
+              {members.map(i => <Tooltip title={i.memberName} placement="top"><AccountCircleRoundedIcon /></Tooltip>)}
             </Grid>
           </Grid>
           <Grid item xs>

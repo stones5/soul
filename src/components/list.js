@@ -85,8 +85,7 @@ export default class List extends React.Component {
             {memberName: "정서영"}
           ]
         },
-      ],
-      groupIndex : [0, 1, 2]
+      ]
     }
   }
 
@@ -134,7 +133,7 @@ export default class List extends React.Component {
           <p>그룹 : </p>
           <select onChange={this.selectGroup.bind(this)}>
             <option value="groupAll">전체</option>
-            {this.state.groupIndex.map(i => <option value={group[i].groupName}>{group[i].groupName}</option>)}
+            {group.map(i => <option value={i.groupName}>{i.groupName}</option>)}
           </select>
           <p>마감 : </p>
           <select onChange={this.selectEnded.bind(this)}>
