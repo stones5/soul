@@ -1,5 +1,6 @@
 import React from "react";
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 import {withStyles } from '@material-ui/core/styles';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -38,7 +39,9 @@ class Egg extends React.Component {
         todos : this.props.oneEgg.todos,
         penalty : this.props.oneEgg.penalty,
         group : this.props.oneEgg.group,
-        createdDate : this.props.oneEgg.createdDate
+        createdDate : this.props.oneEgg.createdDate,
+        groups : this.props.groups,
+        members : []
       }
   }
 
@@ -49,13 +52,19 @@ class Egg extends React.Component {
     var date = d.getDate();
     var hour = d.getHours()
     var minute = d.getMinutes();
+    var ampm = "";
 
-    if(hour > 12) {hour = "오후 " + (hour - 12);}
-    else if(hour === 12) {hour = "오후 " + hour;}
-    else if(hour === 24) {hour = "오전 " + (hour - 12);}
-    else {hour = "오전 " + hour;}
+    if(hour > 12) {ampm = "오후 "; hour -= 12;}
+    else if(hour === 12) {ampm = "오후 ";}
+    else if(hour === 24) {ampm = "오전 "; hour -= 12;}
+    else {ampm = "오전 ";}
 
-    var result = year + "/" + month + "/" + date + " " + hour + ":" + minute;
+    if(hour < 10) {hour = "0" + hour;}
+    if(minute < 10) {minute = "0" + minute;}
+    if(month < 10) {month = "0" + month;}
+    if(date < 10) {date = "0" + date;}
+
+    var result = year + "/" + month + "/" + date + " " + ampm + " " + hour + ":" + minute;
     return(result);
   }
 
@@ -66,8 +75,17 @@ class Egg extends React.Component {
     var idx = [];
     var data = this.state.todos;
     var todoLen = data.length;
+    var members = [];
+    var i = 0;
 
-    for(var i = 0; i < todoLen; i++) {idx.push(i);}
+    for(i = 0; i < todoLen; i++) {idx.push(i);}
+
+    for(i = 0; i < this.state.groups.length; i++) {
+      if(this.state.group === this.state.groups[i].groupName) {
+        members = this.state.groups[i].members;
+        break;
+      }
+    }
 
     idx.map(i => {
       lists.push(<li>{data[i].content}<Tooltip title={data[i].done} placement="top"><input type="button" value={data[i].complete} className="btn" onClick={function() {
@@ -95,19 +113,30 @@ class Egg extends React.Component {
             {lists}
           </ul>
         </div>
-        <div className="Group"> {this.state.group}
-          <AccountCircleRoundedIcon />
-          <AccountCircleRoundedIcon />
-        </div>
-        <div className="Penalty"> 벌칙 : {this.state.penalty} </div>
-        <div className="IconButton">
-          <EggInfo
-            eggTitle = {this.state.eggTitle}
-            penalty = {this.state.penalty}
-            createdDate = {this.state.createdDate}
-          />
-          <EggSetting/>
-        </div>
+        <Grid container className={classes.root} direction="row">
+          <Grid item xs>
+            <Grid container justify="center" direction="row">
+              {this.state.group}
+              {members.map(i => <Tooltip title={i.memberName} placement="top"><AccountCircleRoundedIcon /></Tooltip>)}
+            </Grid>
+          </Grid>
+          <Grid item xs>
+            <Grid container justify="center" direction="row">
+              벌칙 : {this.state.penalty}
+            </Grid>
+          </Grid>
+          <Grid item xs>
+            <Grid container justify="center" direction="row">
+              <EggInfo
+                eggTitle = {this.state.eggTitle}
+                penalty = {this.state.penalty}
+                createdDate = {this.state.createdDate}
+              />
+              <EggSetting/>
+            </Grid>
+          </Grid>
+        </Grid>
+        <br/>
         <div className="createdDate">
           {this.state.createdDate} 생성됨
         </div>
